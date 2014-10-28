@@ -11,7 +11,7 @@ describe Ability do
     it{ should be_able_to(:manage, ReviewingGroup) }
     it{ should be_able_to(:manage, AssociateConsultant) }
     it{ should be_able_to(:manage, User) }
-    it{ should be_able_to(:manage, SelfAssessment) }
+    it { should_not be_able_to(:manage, SelfAssessment) }
     it{ should be_able_to(:submit, Feedback) }
     it{ should be_able_to(:unsubmit, Feedback) }
     it{ should be_able_to(:summary, Review) }

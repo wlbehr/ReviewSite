@@ -18,6 +18,7 @@ class Ability
 
     can :create, Feedback
     can :manage, Feedback, { :submitted => false, :user_id => user.id }
+    can :create_additional, Feedback, :review => {:associate_consultant => {:user_id => user.id}}
     can :send_reminder, Feedback, { :review=> { :associate_consultant =>
       { :user_id => user.id } } }
     cannot :submit, Feedback
@@ -39,7 +40,6 @@ class Ability
         can :manage, ReviewingGroup
         can :manage, AssociateConsultant
         can :manage, User
-        can :manage, SelfAssessment
         can :manage, Invitation
         can [:summary, :index, :read, :create, :new], Feedback, { submitted: true }
         can :submit, Feedback do |feedback|
