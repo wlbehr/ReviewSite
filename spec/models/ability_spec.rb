@@ -37,4 +37,23 @@ describe Ability do
     it{ should be_able_to(:update, User)}
   end
 
+  describe "User with review" do
+    before do
+      @user = FactoryGirl.create(:user)
+      @admin_user = FactoryGirl.create(:admin_user)
+      @ac = FactoryGirl.create(:associate_consultant, user: @user)
+      @review = FactoryGirl.create(:review, associate_consultant: @ac)
+      @ability = Ability.new(@user)
+      @admin_ability = Ability.new(@admin_user)
+    end
+
+    it "should allow users to create additional feedback for own reviews" do
+      @ability.should be_able_to(:additional, Feedback.new, @review)
+    end
+
+    it "should not let admin create additional feedback for user review" do
+      binding.pry
+      @admin_ability.should_not be_able_to(:additional, Feedback.new, @review)
+    end
+  end
 end

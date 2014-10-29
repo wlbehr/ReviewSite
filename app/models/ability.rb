@@ -16,9 +16,16 @@ class Ability
     can :manage, Invitation, :review => { :associate_consultant => { :coach_id => user.id } }
     can [:read, :destroy], Invitation, :email => user.email
 
-    can :create, Feedback
-    can :manage, Feedback, { :submitted => false, :user_id => user.id }
-    can :create_additional, Feedback, :review => {:associate_consultant => {:user_id => user.id}}
+    can [:read, :update, :destroy], Feedback, { :submitted => false, :user_id => user.id }
+
+    can [:create, :new], Feedback do |feedback, review|
+      !review.invitations.where(email: user.email).empty? || (review.associate_consultant.user.id == user.id)
+    end
+
+    can :additional, Feedback do |feedback, review|
+      review.associate_consultant.user.id == user.id
+    end
+
     can :send_reminder, Feedback, { :review=> { :associate_consultant =>
       { :user_id => user.id } } }
     cannot :submit, Feedback
@@ -41,7 +48,7 @@ class Ability
         can :manage, AssociateConsultant
         can :manage, User
         can :manage, Invitation
-        can [:summary, :index, :read, :create, :new], Feedback, { submitted: true }
+        can [:summary, :index, :read], Feedback, { submitted: true }
         can :submit, Feedback do |feedback|
           not feedback.submitted
         end

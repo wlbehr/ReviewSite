@@ -16,10 +16,9 @@
 
     <% if can? :create, review => SelfAssessment %>
       <% if review.self_assessments.count > 0 %>
-      <li><%= link_to "Update Self-Assessment", edit_review_self_assessment_path(review, review.self_assessments.first) %></li>
-
+        <li><%= link_to "Update Self-Assessment", edit_review_self_assessment_path(review, review.self_assessments.first) %></li>
       <% else %>
-      <li><%= link_to "Submit Self-Assessment", new_review_self_assessment_path(review) %></li>
+        <li><%= link_to "Submit Self-Assessment", new_review_self_assessment_path(review) %></li>
       <% end %>
     <% end %>
     
