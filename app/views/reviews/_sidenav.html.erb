@@ -22,7 +22,7 @@
       <% end %>
     <% end %>
     
-    <% if can? :create_additional, review => Feedback %>
+    <% if can? :additional, review => Feedback %>
     <li><%= link_to "Record External Feedback", additional_review_feedbacks_path(review) %></li>
     <% end %>
 
