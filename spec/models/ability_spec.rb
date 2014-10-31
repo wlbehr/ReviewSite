@@ -11,7 +11,6 @@ describe Ability do
     it{ should be_able_to(:manage, ReviewingGroup) }
     it{ should be_able_to(:manage, AssociateConsultant) }
     it{ should be_able_to(:manage, User) }
-    it{ should_not be_able_to(:manage, SelfAssessment) }
     it{ should be_able_to(:submit, Feedback) }
     it{ should be_able_to(:unsubmit, Feedback) }
     it{ should be_able_to(:summary, Review) }
@@ -95,6 +94,11 @@ describe Ability do
       giver_ability.should be_able_to(:read, feedback)
       giver_ability.should_not be_able_to(:update, feedback)
       giver_ability.should_not be_able_to(:destroy, feedback)
+      other_user = FactoryGirl.create(:user)
+      other_ability = Ability.new(other_user)
+      other_ability.should_not be_able_to(:read, feedback)
+      other_ability.should_not be_able_to(:update, feedback)
+      other_ability.should_not be_able_to(:destroy, feedback)
     end
 
     it "should be able to read submitted feedback for own review" do

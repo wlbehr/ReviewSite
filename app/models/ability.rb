@@ -1,7 +1,7 @@
 class Ability
   include CanCan::Ability
 
-  def initialize(user)
+  def initialize(user, ability_review = nil)
 
     alias_action :create, :read, :update, :destroy, :to => :crud
 
@@ -18,11 +18,11 @@ class Ability
 
     can [:read, :update, :destroy], Feedback, { :submitted => false, :user_id => user.id }
 
-    can [:create, :new], Feedback do |feedback, review|
+    can [:create, :new], Feedback do |feedback, review = ability_review |
       !review.invitations.where(email: user.email).empty? || (review.associate_consultant.user.id == user.id)
     end
 
-    can :additional, Feedback do |feedback, review|
+    can :additional, Feedback do |feedback, review = ability_review|
       review.associate_consultant.user.id == user.id
     end
 
